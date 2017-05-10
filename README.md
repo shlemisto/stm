@@ -5,7 +5,7 @@ It allows to easily create text-based menu interface.
 
 # How do I use it?
 
-Easily! Look.
+It's very easy.
 
 Firstly create menu structure by filling array:
 
@@ -32,7 +32,11 @@ Firstly create menu structure by filling array:
 
 		{ 0, label("Exit"), NULL, EXIT }
 	};
+	
+  Where each entry have format:
   
+  	{ level, label (truncate to 25), action, some options (EXIT or HAVE_SUBMENU) }
+	
   To show menu just call `show_menu`:
     
     show_menu(&menu_example[0], ARRAY_SIZE(menu_example))
