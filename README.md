@@ -7,7 +7,7 @@ It allows to easily create text-based menu interface.
 
 It's very easy.
 
-Firstly create menu structure by filling array:
+Firstly create menu structure by filling an array:
 
 	struct menu menu_example[] = {
 		{ 0, label("Create file"), NULL, HAVE_SUBMENU },
