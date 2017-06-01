@@ -18,8 +18,8 @@ extern "C" {
 #endif
 
 #define BIT(b) (1 << (b))
-
 #define MAX_LABEL_LEN 25
+#define MENU_BORDER "+-------------------------------+"
 
 enum MENU_OPTIONS {
 	EXIT = BIT(0),
@@ -32,6 +32,7 @@ enum MENU_OPTIONS {
  *   !!! we truncate too long string to MAX_LABEL_LEN
  * @action - menu entry payload function
  * @options - some options
+ * @title - menu title
  *
  */
 struct menu {
@@ -39,6 +40,7 @@ struct menu {
 	char *label;
 	void (*action)();
 	u8 options;
+	char *title;
 };
 
 /*

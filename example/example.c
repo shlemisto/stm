@@ -52,7 +52,7 @@ int main(void)
 	int err = 0;
 
 	struct menu menu_example[] = {
-		{ 0, label("Create file"), NULL, HAVE_SUBMENU },
+		{ 0, label("Create file"), NULL, HAVE_SUBMENU, label("Create your super file") },
 		  { 1, label("Are you sure?"), create_file },
 		  { 1, label("Back"), NULL, EXIT },
 
@@ -62,7 +62,8 @@ int main(void)
 		
 		{ 0, label("ls $pwd"), ls },
 		
-		{ 0, label("We need to go deeper [0]"), NULL, HAVE_SUBMENU },
+		{ 0, label("We need to go deeper [0]"), NULL, HAVE_SUBMENU,
+			label("want more and more") },
 		  { 1, label("And Deeper [1]"), NULL, HAVE_SUBMENU },
 		    { 2, label("And Deeper [2]"), NULL, HAVE_SUBMENU },
 		      { 3, label("And Deeper [3]"), stop_it, HAVE_SUBMENU },
