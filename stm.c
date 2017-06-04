@@ -116,12 +116,8 @@ int show_menu(struct menu *m, int menu_len)
 		system("clear");
 
 		// show title
-		if (m[current_menu].action[1])
+		if (m[current_menu].action[1] || show_title)
 			m[current_menu].action[1]();
-		else if (show_title) {
-			m[subinfo[current_menu].parent].action[1]();
-			show_title = false;
-		}
 
 		// show menu
 		printf("%s\n", MENU_BORDER);
