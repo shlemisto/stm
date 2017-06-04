@@ -20,6 +20,16 @@ char *label(const char *label)
 	return l;
 }
 
+void show_menu_title(char *title, int len)
+{
+	len += MENU_BORDER_LEN;
+	if (len % 2)
+		--len;
+	len /= 2;
+
+	printf("%*s\n", len, title);
+}
+
 static struct menu_subinfo *__get_menu_subinfo(struct menu *m, int size)
 {
 	int i, parent;
@@ -35,7 +45,7 @@ static struct menu_subinfo *__get_menu_subinfo(struct menu *m, int size)
 
 	// find menu's depth
 	for (i = 0; i < size; ++i) {
-		if (m[i].level > max_level)
+		if ((m[i].level > max_level) && (m[i].level != (u8)-1))
 			++max_level;
 	}
 
@@ -63,9 +73,11 @@ static struct menu_subinfo *__get_menu_subinfo(struct menu *m, int size)
 				}
 
 				// find a parent of menu
-				for (parent = i; parent > 0; --parent) {
-					if (m[parent].level + 1 == m[i].level) {
-						subinfo[i].parent = parent - 1;
+				for (parent = i; parent >= 0; --parent) {
+					if (m[i].level == (u8)-1)
+						continue;
+					if (m[parent].level == m[i].level - 1) {
+						subinfo[i].parent = parent;
 						break;
 					}
 				}
@@ -86,13 +98,13 @@ int show_menu(struct menu *m, int menu_len)
 {
 	u8 current_level = 0,
 	   choice;
-	char read_buf[2+1],
-	     *title = NULL;
+	char read_buf[2+1];
 	int i,
 	    option_number,
 	    submenu,
 	    current_menu = 0;
 	bool submenu_end = false,
+	     show_title = false,
 	     is_running = true;
 	struct menu_subinfo *subinfo;
 
@@ -103,17 +115,16 @@ int show_menu(struct menu *m, int menu_len)
 	while (is_running) {
 		system("clear");
 
-		if (title) {
-			int len = strlen(MENU_BORDER) + strlen(title);
-			if (len % 2 == 1)
-				len++;
-			len /= 2;
-			printf("%*s\n", len, title);
-			title = NULL;
+		// show title
+		if (m[current_menu].action[1])
+			m[current_menu].action[1]();
+		else if (show_title) {
+			m[subinfo[current_menu].parent].action[1]();
+			show_title = false;
 		}
 
+		// show menu
 		printf("%s\n", MENU_BORDER);
-		// print menu
 		for (i = current_menu, option_number = 0; i < menu_len; ++i) {
 			if (m[i].level == current_level) {
 				if (current_level == 0) {
@@ -147,20 +158,23 @@ int show_menu(struct menu *m, int menu_len)
 		}
 		printf("%s\n", MENU_BORDER);
 
-		printf("> ");
 		fflush(stdin);
+		printf("> ");
 		scanf("%2s", read_buf);
 		choice = atoi(read_buf);
 
 		// convert user choice to menu
 		for (i = current_menu; i < menu_len; ++i) {
 			if ((m[i].level == current_level) && (subinfo[i].option_number == choice)) {
+				show_title = false;
 				if (m[i].options & EXIT) {
 					if (current_level) {
 						--current_level;
-						if (current_level)
+						if (current_level) {
 							current_menu = subinfo[i].parent;
-						else
+							if (m[current_menu].action[1])
+								show_title = true;
+						} else
 							current_menu = 0;
 					} else
 						is_running = false;
@@ -170,11 +184,8 @@ int show_menu(struct menu *m, int menu_len)
 						current_menu = i + 1;
 					}
 
-					if (m[i].title)
-						title = m[i].title;
-
-					if (m[i].action)
-						m[i].action();
+					if (m[i].action[0])
+						m[i].action[0]();
 				}
 
 				break;
@@ -183,15 +194,13 @@ int show_menu(struct menu *m, int menu_len)
 	}
 
 	// execute only at level#0
-	if (m[i].action)
-		m[i].action();
+	if (m[i].action[0])
+		m[i].action[0]();
 
 	free(subinfo);
 
-	for (i = 0; i < menu_len; ++i) {
+	for (i = 0; i < menu_len; ++i)
 		free(m[i].label);
-		free(m[i].title);
-	}
 
 	return 0;
 }

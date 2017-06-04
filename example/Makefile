@@ -7,9 +7,9 @@ SRCS = example.c
 
 OBJS = $(SRCS:.c=.o)
 
-OUT = stm_example
+OUT = example
 
-default: $(OUT)
+default: clean $(OUT)
 
 $(OUT): $(OBJS)
 	$(CC) $(CFLAGS) -o $(OUT) $(OBJS)
