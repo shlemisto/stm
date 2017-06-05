@@ -22,12 +22,14 @@ char *label(const char *label)
 
 void show_menu_title(char *title, int len)
 {
-	len += MENU_BORDER_LEN;
-	if (len % 2)
-		--len;
-	len /= 2;
+	if (len < MENUBORDER_LEN) {
+		len = (MENU_BORDER_LEN - len) / 2;
+		if (len % 2)
+			--len;
+	} else
+		len = 0;
 
-	printf("%*s\n", len, title);
+	printf("%*s %s\n", len, " ", title);
 }
 
 static struct menu_subinfo *__get_menu_subinfo(struct menu *m, int size)
