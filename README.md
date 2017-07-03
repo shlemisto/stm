@@ -37,7 +37,7 @@ Firstly create menu structure by filling an array:
 	
   Where each entry have format:
   
-  	{ level, label (truncate to 25), action, some options (EXIT or HAVE_SUBMENU), title (truncate to 25) }
+  	{ level, label (truncate to 25), action, some options (EXIT or HAVE_SUBMENU) }
 	
   To show menu just call `show_menu`:
     
