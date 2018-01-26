@@ -22,7 +22,7 @@ char *label(const char *label)
 
 void show_menu_title(char *title, int len)
 {
-	if (len < MENUBORDER_LEN) {
+	if (len < MENU_BORDER_LEN) {
 		len = (MENU_BORDER_LEN - len) / 2;
 		if (len % 2)
 			--len;
