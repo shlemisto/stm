@@ -34,7 +34,7 @@ extern "C" {
 
 enum MENU_OPTIONS {
 	EXIT = BIT(0),
-	HAVE_SUBMENU = BIT(1)
+	HAS_SUBMENU = BIT(1)
 };
 
 /*

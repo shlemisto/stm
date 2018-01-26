@@ -177,7 +177,7 @@ int show_menu(struct menu *m, int menu_len)
 					} else
 						is_running = false;
 				} else {
-					if (m[i].options & HAVE_SUBMENU) {
+					if (m[i].options & HAS_SUBMENU) {
 						++current_level;
 						current_menu = i + 1;
 					}
