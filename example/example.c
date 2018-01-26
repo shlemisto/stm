@@ -53,8 +53,8 @@ void and_deeper()
 
 void main_title()
 {
-	char *title = "\x1b[31m" "stm example" "\x1b[0m";
-	show_menu_title(title, strlen(title) + 11);
+	char *title = "stm example";
+	show_menu_title(title, strlen(title));
 }
 
 int main(void)
